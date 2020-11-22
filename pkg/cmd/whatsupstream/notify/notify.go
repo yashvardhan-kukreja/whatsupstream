@@ -17,14 +17,10 @@ package notify
 
 import (
 	"fmt"
-	"time"
 	"os"
 
 	"github.com/spf13/cobra"
 	homedir "github.com/mitchellh/go-homedir"
-
-	"whatsupstream/pkg/apis/config"
-	internalConfig "whatsupstream/pkg/internal/apis/config"
 )
 
 type flagpole struct {
@@ -54,25 +50,4 @@ The notifications would be in the form of desktop notifications.`,
 		"Path to the config containing preferences associated with the notifications to receive.",
 	)
 	return cmd
-}
-
-func runE(flags *flagpole) error {
-	inputConfig, err := config.YamlConfigToInputConfig(flags.Config)
-	if err != nil {
-		return fmt.Errorf("error occurred while executing the 'notify' command: %w", err)
-	}
-	if err := config.ValidateConfig(inputConfig); err != nil {
-		return fmt.Errorf("error occurred while executing the 'notify' command: %w", err)
-	}
-	parsedConfig, err := internalConfig.ConvertInputConfigToInternalConfig(inputConfig)
-	errThreshold := 0
-	for errThreshold <= 3 {
-		data, err := internalConfig.FetchNotificationData(parsedConfig)
-		if err != nil {
-			fmt.Printf("Error occurred: %w", err)
-			errThreshold ++
-		}
-		time.Sleep(3*time.Second)
-	}
-	return fmt.Errorf("error occurred while fetching notification data more than threshold amount of times (3)")
 }
