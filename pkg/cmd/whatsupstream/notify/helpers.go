@@ -43,7 +43,7 @@ func runE(flags *flagpole) error {
 			fmt.Printf("error occurred while executing 'notify': %w", err)
 			errThreshold++
 		}
-		for _, issue := range data.Issues {
+		for i, issue := range data.Issues {
 			title := "Whatsupstream's Update 🚀"
 			description, err := formatNotificationDescription(issue)
 			silentMode := true
@@ -51,7 +51,15 @@ func runE(flags *flagpole) error {
 				fmt.Printf("error occurred while executing 'notify': %w", err)
 				errThreshold++
 			}
-			go raiseNotification(title, description, silentMode)
+			// raising notifications concurrently
+			go func() {
+				err := raiseNotification(title, description, silentMode)
+				if err != nil {
+					fmt.Printf("error occurred while executing 'notify': %w", err)
+					errThreshold++
+				}
+				parsedConfig.IssueConfigs[i].Since = time.Now().Format("2006-01-02T15:04:05Z") // updating the Since field to the latest time so that next time, only new issues come up
+			}()
 		}
 		pollingInterval := time.Duration(parsedConfig.PollingRate) * time.Second
 		time.Sleep(pollingInterval)

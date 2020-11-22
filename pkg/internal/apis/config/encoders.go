@@ -18,6 +18,8 @@ package config
 import (
 	"fmt"
 	"strings"
+	"time"
+
 	"whatsupstream/pkg/apis/config"
 )
 
@@ -69,6 +71,11 @@ func convertInputIssueConfigToInternalIssueConfig(inputIssueConfig config.IssueC
 		maxIssuesCount = 5
 	}
 
+	since := inputIssueConfig.Since
+	if since == "" {
+		since = time.Now().Add(-24 * time.Hour).Format("2006-01-02T15:04:05Z")
+	}
+
 	return IssueConfig{
 		Owner:          owner,
 		RepoName:       repoName,
@@ -76,7 +83,7 @@ func convertInputIssueConfigToInternalIssueConfig(inputIssueConfig config.IssueC
 		Assignee:       inputIssueConfig.Assignee,
 		Creator:        inputIssueConfig.Creator,
 		State:          issueState,
-		Since:          inputIssueConfig.Since,
+		Since:          since,
 		MaxIssuesCount: maxIssuesCount,
 	}, nil
 }

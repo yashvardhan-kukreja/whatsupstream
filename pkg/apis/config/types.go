@@ -48,6 +48,8 @@ type IssueConfig struct {
 	Closed bool `yaml:"closed,omitempty"`
 
 	// Since denotes the timestamp from which the issues which were created after it, will only be eligible for being notified about.
+	// it must have the following format "yyyy-mm-ddTHH:MM:SSZ". For example:  "2006-01-02T15:04:05Z"
+	// if left unset, then, it will be set to the timestamp of exactly 24hrs (1 day) before current time.
 	Since string `yaml:"since,omitempty"`
 
 	// MaxIssuesCount denotes the top (as per creation time) maximum number of issues which will be considered for being notified about.

@@ -55,6 +55,8 @@ type IssueConfig struct {
 	State IssueState
 
 	// Since denotes the timestamp from which the issues which were created after it, will only be eligible for being notified about.
+	//
+	// if left unset, then, it will be set to the timestamp of exactly 24hrs (1 day) before current time.
 	Since string
 
 	// MaxIssuesCount denotes the top (as per creation time) maximum number of issues which will be considered for being notified about.
