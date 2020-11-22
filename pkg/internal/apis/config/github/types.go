@@ -18,7 +18,7 @@ package github
 // Issue represents the fields coming from the API response from api.github.com
 type Issue struct {
 	Title string `json:"title"`
-	Number int32 `json:"number"`
+	Number int `json:"number"`
 	State string `json:"state"`
 	CreatedAt string `json:"created_at"`
 	User User `json:"user"`
