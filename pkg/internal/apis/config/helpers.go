@@ -18,9 +18,25 @@ package config
 import (
 	"fmt"
 	"strings"
+	"whatsupstream/pkg/internal/apis/config/github"
 )
 
-func GenerateAllApiUrlsForConfig(config Config) []string {
+func FetchNotificationData(config Config) (Notification, error) {
+	apiUrls := generateAllApiUrlsForConfig(config)
+	allIssues := []github.Issue{}
+	for _, apiUrl := range apiUrls {
+		issues, err := github.FetchTopIssues(apiUrl)
+		if err != nil {
+			return Notification{}, fmt.Errorf("error occurred while fetching data for notification: %w", err)
+		}
+		allIssues = append(allIssues, issues...)
+	}
+	return Notification{
+		Issues: allIssues,
+	}, nil
+}
+
+func generateAllApiUrlsForConfig(config Config) []string {
 	var urls []string
 	for _, issueConfig := range config.IssueConfigs {
 		urls = append(urls, generateApiUrlForIssueConfig(issueConfig))
@@ -31,8 +47,8 @@ func GenerateAllApiUrlsForConfig(config Config) []string {
 func generateApiUrlForIssueConfig(issueConfig IssueConfig) string {
 
 	var params []string
-
 	params = append(params, "state=" + string(issueConfig.State))
+	
 	if issueConfig.Assignee != "" && issueConfig.Assignee != "*" {
 		params = append(params, "assignee=" + issueConfig.Assignee)
 	}
