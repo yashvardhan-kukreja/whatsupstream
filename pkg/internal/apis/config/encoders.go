@@ -21,26 +21,26 @@ import (
 	"whatsupstream/pkg/apis/config"
 )
 
-func ConvertInputConfigtoInteralConfig(inputConfig config.Config) (error, Config) {
+func ConvertInputConfigToInternalConfig(inputConfig config.Config) (Config, error) {
 	var parsedInternalIssueConfigs []IssueConfig
 	for _, inputIssueConfig := range inputConfig.IssueConfigs {
-		err, parsedInternalIssueConfig := convertInputIssueConfigToInternalIssueConfig(inputIssueConfig)
+		parsedInternalIssueConfig, err := convertInputIssueConfigToInternalIssueConfig(inputIssueConfig)
 		if err != nil {
-			return fmt.Errorf("error occurred parsing an issue config: %w", err), Config{}
+			return Config{}, fmt.Errorf("error occurred parsing an issue config: %w", err)
 		}
 		parsedInternalIssueConfigs = append(parsedInternalIssueConfigs, parsedInternalIssueConfig)
 	}
 
-	return nil, Config{
+	return Config{
 		IssueConfigs: parsedInternalIssueConfigs,
-	}
+	}, nil
 
 }
 
 // ConvertInputIssueConfigToInternalIssueConfig ...
-func convertInputIssueConfigToInternalIssueConfig(inputIssueConfig config.IssueConfig) (error, IssueConfig) {
+func convertInputIssueConfigToInternalIssueConfig(inputIssueConfig config.IssueConfig) (IssueConfig, error) {
 	if inputIssueConfig.RepositoryURL == "" {
-		return fmt.Errorf("repository URL not found in the issue config"), IssueConfig{}
+		return IssueConfig{}, fmt.Errorf("repository URL not found in the issue config")
 	}
 	repositoryURLTokens := strings.Split(inputIssueConfig.RepositoryURL, "/")
 	repoName := repositoryURLTokens[len(repositoryURLTokens)-1]
@@ -53,13 +53,18 @@ func convertInputIssueConfigToInternalIssueConfig(inputIssueConfig config.IssueC
 		issueState = Opened
 	}
 
-	return nil, IssueConfig{
+	labels := inputIssueConfig.Labels
+	for i, _ := range labels {
+		labels[i] = strings.ReplaceAll(labels[i], " ", "+")
+	}
+
+	return IssueConfig{
 		Owner: owner,
 		RepoName: repoName,
-		Labels: inputIssueConfig.Labels,
+		Labels: labels,
 		Assignee: inputIssueConfig.Assignee,
 		Creator: inputIssueConfig.Creator,
 		State: issueState,
 		Since: inputIssueConfig.Since,
-	}
+	}, nil
 }

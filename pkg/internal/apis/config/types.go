@@ -15,6 +15,10 @@ limitations under the License.
 */
 package config
 
+import (
+	"whatsupstream/pkg/internal/apis/config/github"
+)
+
 // Config represents the main configuration on the basis of which the user will get notifications
 type Config struct {
 
@@ -62,3 +66,7 @@ const (
 const (
 	API_BASE_URL_REPOS = "https://api.github.com/repos"
 )
+
+type Notification struct {
+	Issues []github.Issue
+}
