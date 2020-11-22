@@ -30,11 +30,7 @@ type APIRequest struct {
 	Body io.Reader
 }
 
-const (
-	MAX_ISSUES = 10
-)
-
-func FetchTopIssues(url string) ([]Issue, error) {
+func FetchTopIssues(url string, maxIssuesCount int) ([]Issue, error) {
 	var issues []Issue
 	request := APIRequest{
 		URL: url,
@@ -47,14 +43,13 @@ func FetchTopIssues(url string) ([]Issue, error) {
 	if err := json.Unmarshal(responseBody, &issues); err != nil {
 		return []Issue{}, fmt.Errorf("error occurred while fetching the issues: %w", err)
 	}
-	if len(issues) > MAX_ISSUES {
-		issues = issues[:MAX_ISSUES]
+	if len(issues) > maxIssuesCount {
+		issues = issues[:maxIssuesCount]
 	}
 	return issues, nil
 }
 
 func callAPI(request APIRequest) ([]byte, error) {
-
 	var response *http.Response
 	switch request.Method {
 	case GET:

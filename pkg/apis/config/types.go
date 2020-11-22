@@ -13,7 +13,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-
 package config
 
 // Config represents the main configuration on the basis of which the user will get notifications
@@ -23,6 +22,10 @@ type Config struct {
 	// for example - an element of IssueConfigs can be responsible for notifying about "good first issue" labelled issues,
 	// and another element of IssueConfigs can be responsible for notifying about issues associated with "bug" labelled issues of another repo.
 	IssueConfigs []IssueConfig `yaml:"issue-configs,omitempty"`
+
+	// PollingRate denotes the rate (in seconds) at which the whatsupstream will run and poll and check github for any updates
+	// if left unset, then, it will be set to 60 seconds.
+	PollingRate int `yaml:"polling-rate,omitempty"`
 }
 
 // IssueConfig represents the configuration associated with issue-related notifications of a repository
@@ -46,6 +49,11 @@ type IssueConfig struct {
 
 	// Since denotes the timestamp from which the issues which were created after it, will only be eligible for being notified about.
 	Since string `yaml:"since,omitempty"`
+
+	// MaxIssuesCount denotes the top (as per creation time) maximum number of issues which will be considered for being notified about.
+	// for example: if MaxIssuesCount is 5, then, only top 5 latest issues will be considered for being notified about (if in a query more than issues are returned).
+	// if left unset, MaxIssuesCount will be set to 5.
+	MaxIssuesCount int `yaml:"max-issues-count,omitempty"`
 }
 
 const (

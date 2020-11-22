@@ -31,8 +31,14 @@ func ConvertInputConfigToInternalConfig(inputConfig config.Config) (Config, erro
 		parsedInternalIssueConfigs = append(parsedInternalIssueConfigs, parsedInternalIssueConfig)
 	}
 
+	pollingRate := inputConfig.PollingRate
+	if pollingRate <= 0 {
+		pollingRate = 60
+	}
+	
 	return Config{
 		IssueConfigs: parsedInternalIssueConfigs,
+		PollingRate: pollingRate,
 	}, nil
 
 }
@@ -54,8 +60,13 @@ func convertInputIssueConfigToInternalIssueConfig(inputIssueConfig config.IssueC
 	}
 
 	labels := inputIssueConfig.Labels
-	for i, _ := range labels {
+	for i := range labels {
 		labels[i] = strings.ReplaceAll(labels[i], " ", "+")
+	}
+
+	maxIssuesCount := inputIssueConfig.MaxIssuesCount
+	if maxIssuesCount <= 0 {
+		maxIssuesCount = 5
 	}
 
 	return IssueConfig{
@@ -66,5 +77,6 @@ func convertInputIssueConfigToInternalIssueConfig(inputIssueConfig config.IssueC
 		Creator: inputIssueConfig.Creator,
 		State: issueState,
 		Since: inputIssueConfig.Since,
+		MaxIssuesCount: maxIssuesCount,
 	}, nil
 }

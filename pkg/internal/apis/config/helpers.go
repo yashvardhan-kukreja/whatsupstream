@@ -24,8 +24,8 @@ import (
 func FetchNotificationData(config Config) (Notification, error) {
 	apiUrls := generateAllApiUrlsForConfig(config)
 	allIssues := []github.Issue{}
-	for _, apiUrl := range apiUrls {
-		issues, err := github.FetchTopIssues(apiUrl)
+	for i, apiUrl := range apiUrls {
+		issues, err := github.FetchTopIssues(apiUrl, config.IssueConfigs[i].MaxIssuesCount)
 		if err != nil {
 			return Notification{}, fmt.Errorf("error occurred while fetching data for notification: %w", err)
 		}
@@ -45,7 +45,6 @@ func generateAllApiUrlsForConfig(config Config) []string {
 }
 
 func generateApiUrlForIssueConfig(issueConfig IssueConfig) string {
-
 	var params []string
 	params = append(params, "state=" + string(issueConfig.State))
 	

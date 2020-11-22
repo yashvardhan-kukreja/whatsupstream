@@ -53,7 +53,8 @@ func runE(flags *flagpole) error {
 			}
 			go raiseNotification(title, description, silentMode)
 		}
-		time.Sleep(3*time.Second)
+		pollingInterval := time.Duration(parsedConfig.PollingRate)*time.Second
+		time.Sleep(pollingInterval)
 	}
 	return fmt.Errorf("error occurred while fetching notification data more than threshold amount of times (3)")
 }
