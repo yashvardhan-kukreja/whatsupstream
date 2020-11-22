@@ -18,9 +18,11 @@ package notify
 import (
 	"fmt"
 	"time"
+	"os"
+
 	"github.com/spf13/cobra"
-	"gopkg.in/yaml.v2"
-	"io/ioutil"
+	homedir "github.com/mitchellh/go-homedir"
+
 	"whatsupstream/pkg/apis/config"
 	internalConfig "whatsupstream/pkg/internal/apis/config"
 )
@@ -41,16 +43,21 @@ The notifications would be in the form of desktop notifications.`,
 			return runE(flags)
 		},
 	}
+	home, err := homedir.Dir()
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 	cmd.Flags().StringVar(
 		&flags.Config, "config",
-		"/Users/yash1300/.whatsupstream/config.yaml",
+		fmt.Sprintf("%s/.whatsupstream/config.yaml", home),
 		"Path to the config containing preferences associated with the notifications to receive.",
 	)
 	return cmd
 }
 
 func runE(flags *flagpole) error {
-	inputConfig, err := yamlConfigToInputConfig(flags.Config)
+	inputConfig, err := config.YamlConfigToInputConfig(flags.Config)
 	if err != nil {
 		return fmt.Errorf("error occurred while executing the 'notify' command: %w", err)
 	}
@@ -65,23 +72,7 @@ func runE(flags *flagpole) error {
 			fmt.Printf("Error occurred: %w", err)
 			errThreshold ++
 		}
-		fmt.Printf("\nLength of data := %d, \n Data := %+v \n", len(data.Issues), data)
 		time.Sleep(3*time.Second)
 	}
 	return fmt.Errorf("error occurred while fetching notification data more than threshold amount of times (3)")
-}
-
-func yamlConfigToInputConfig(configPath string) (config.Config, error) {
-	yamlFile, err := ioutil.ReadFile(configPath)
-    if err != nil {
-        return config.Config{}, fmt.Errorf("error occurred while reading the config file: %w", err)
-	}
-
-	var inputConfig config.Config
-    err = yaml.Unmarshal(yamlFile, &inputConfig)
-    if err != nil {
-		return config.Config{}, fmt.Errorf("error occurred while reading the config file: %w", err)
-    }
-
-    return inputConfig, nil
 }
