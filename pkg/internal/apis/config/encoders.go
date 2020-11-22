@@ -35,10 +35,10 @@ func ConvertInputConfigToInternalConfig(inputConfig config.Config) (Config, erro
 	if pollingRate <= 0 {
 		pollingRate = 60
 	}
-	
+
 	return Config{
 		IssueConfigs: parsedInternalIssueConfigs,
-		PollingRate: pollingRate,
+		PollingRate:  pollingRate,
 	}, nil
 
 }
@@ -70,13 +70,13 @@ func convertInputIssueConfigToInternalIssueConfig(inputIssueConfig config.IssueC
 	}
 
 	return IssueConfig{
-		Owner: owner,
-		RepoName: repoName,
-		Labels: labels,
-		Assignee: inputIssueConfig.Assignee,
-		Creator: inputIssueConfig.Creator,
-		State: issueState,
-		Since: inputIssueConfig.Since,
+		Owner:          owner,
+		RepoName:       repoName,
+		Labels:         labels,
+		Assignee:       inputIssueConfig.Assignee,
+		Creator:        inputIssueConfig.Creator,
+		State:          issueState,
+		Since:          inputIssueConfig.Since,
 		MaxIssuesCount: maxIssuesCount,
 	}, nil
 }

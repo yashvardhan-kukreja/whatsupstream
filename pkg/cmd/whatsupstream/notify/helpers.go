@@ -41,7 +41,7 @@ func runE(flags *flagpole) error {
 		data, err := internalConfig.FetchNotificationData(parsedConfig)
 		if err != nil {
 			fmt.Printf("error occurred while executing 'notify': %w", err)
-			errThreshold ++
+			errThreshold++
 		}
 		for _, issue := range data.Issues {
 			title := "Whatsupstream's Update 🚀"
@@ -53,7 +53,7 @@ func runE(flags *flagpole) error {
 			}
 			go raiseNotification(title, description, silentMode)
 		}
-		pollingInterval := time.Duration(parsedConfig.PollingRate)*time.Second
+		pollingInterval := time.Duration(parsedConfig.PollingRate) * time.Second
 		time.Sleep(pollingInterval)
 	}
 	return fmt.Errorf("error occurred while fetching notification data more than threshold amount of times (3)")

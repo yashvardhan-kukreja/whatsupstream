@@ -69,7 +69,7 @@ type IssueState string
 const (
 	Closed IssueState = "closed"
 	Opened IssueState = "open"
-	All IssueState = "all"
+	All    IssueState = "all"
 )
 
 const (

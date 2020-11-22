@@ -46,22 +46,21 @@ func generateAllApiUrlsForConfig(config Config) []string {
 
 func generateApiUrlForIssueConfig(issueConfig IssueConfig) string {
 	var params []string
-	params = append(params, "state=" + string(issueConfig.State))
-	
+	params = append(params, "state="+string(issueConfig.State))
+
 	if issueConfig.Assignee != "" && issueConfig.Assignee != "*" {
-		params = append(params, "assignee=" + issueConfig.Assignee)
+		params = append(params, "assignee="+issueConfig.Assignee)
 	}
 	if issueConfig.Creator != "" {
-		params = append(params, "creator=" + issueConfig.Creator)
+		params = append(params, "creator="+issueConfig.Creator)
 	}
 	if len(issueConfig.Labels) > 0 {
-		params = append(params, "labels=" + strings.Join(issueConfig.Labels, ","))
+		params = append(params, "labels="+strings.Join(issueConfig.Labels, ","))
 	}
 	if issueConfig.Since != "" {
-		params = append(params, "since=" + issueConfig.Since)
+		params = append(params, "since="+issueConfig.Since)
 	}
 
-	return fmt.Sprintf("%s/%s/%s/issues?%s", 
+	return fmt.Sprintf("%s/%s/%s/issues?%s",
 		API_BASE_URL_REPOS, issueConfig.Owner, issueConfig.RepoName, strings.Join(params, "&"))
 }
-

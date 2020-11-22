@@ -16,24 +16,24 @@ limitations under the License.
 package github
 
 import (
-	"io"
-	"fmt"
-	"net/http"
-	"io/ioutil"
 	"encoding/json"
+	"fmt"
+	"io"
+	"io/ioutil"
+	"net/http"
 )
 
 type APIRequest struct {
-	URL string
-	Method APIMethod
+	URL         string
+	Method      APIMethod
 	ContentType APIContentType
-	Body io.Reader
+	Body        io.Reader
 }
 
 func FetchTopIssues(url string, maxIssuesCount int) ([]Issue, error) {
 	var issues []Issue
 	request := APIRequest{
-		URL: url,
+		URL:    url,
 		Method: GET,
 	}
 	responseBody, err := callAPI(request)

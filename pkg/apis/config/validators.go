@@ -17,8 +17,8 @@ package config
 
 import (
 	"fmt"
-	"regexp"
 	"net/http"
+	"regexp"
 )
 
 const (
@@ -40,7 +40,7 @@ func validateIssueConfig(issueConfig IssueConfig) error {
 	}
 	if err := validateSince(issueConfig.Since); err != nil {
 		return fmt.Errorf("error occurred while parsing an issue configuration: %w", err)
-	}	
+	}
 	return nil
 }
 

@@ -17,21 +17,21 @@ package config
 
 import (
 	"fmt"
-	"io/ioutil"
 	"gopkg.in/yaml.v2"
+	"io/ioutil"
 )
 
 func YamlConfigToInputConfig(configPath string) (Config, error) {
 	yamlFile, err := ioutil.ReadFile(configPath)
-    if err != nil {
-        return Config{}, fmt.Errorf("error occurred while reading the config file: %w", err)
+	if err != nil {
+		return Config{}, fmt.Errorf("error occurred while reading the config file: %w", err)
 	}
 
 	var inputConfig Config
-    err = yaml.Unmarshal(yamlFile, &inputConfig)
-    if err != nil {
+	err = yaml.Unmarshal(yamlFile, &inputConfig)
+	if err != nil {
 		return Config{}, fmt.Errorf("error occurred while reading the config file: %w", err)
-    }
+	}
 
-    return inputConfig, nil
+	return inputConfig, nil
 }
