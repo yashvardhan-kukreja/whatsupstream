@@ -22,6 +22,8 @@ import (
 
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
+
+	"whatsupstream/pkg/cmd/whatsupstream/notify"
 )
 
 var cfgFile string
@@ -29,13 +31,13 @@ var cfgFile string
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "whatsupstream",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Stay up-to-date and notified with your favorite OSS repos with whatsupstream",
+	Long: `whatsupstream can keep you up-to-date and notified about the activity associated with any OSSN repository.
+Say, there is an active OSS repository and you want to take up a good first issue as soon as one opens up.
+Now, in real life, this is tough because you can't just keep on checking the issues of that repo every minute.
+And someone might take up that issue before you too.
+So, whatsupstream can notify you in almost real-time whenever such issue comes up.
+And you can tweak whatsupstream to notify you for any other kind or category of issues.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) { 
@@ -59,11 +61,11 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.whatsupstream.yaml)")
-
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+
+	rootCmd.AddCommand(notify.NewCommand())
 }
 
 // initConfig reads in config file and ENV variables if set.
