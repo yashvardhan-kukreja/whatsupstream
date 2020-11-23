@@ -17,6 +17,8 @@ package notify
 
 import (
 	"fmt"
+	"os"
+	"os/exec"
 	"strings"
 	"time"
 
@@ -28,6 +30,17 @@ import (
 )
 
 func runE(flags *flagpole) error {
+	// extremely hacky way of running as background process when --background flag is provided
+	// gotta fix this
+	if flags.AsBackground {
+		notifyCmd := fmt.Sprintf(`whatsupstream notify --config %s &`, flags.Config)
+		execCmd := exec.Command("bash", "-c", notifyCmd)
+		execCmd.Stderr = os.Stderr
+		if err := execCmd.Run(); err != nil {
+			return fmt.Errorf("%w", err)
+		}
+		return nil
+	}
 	inputConfig, err := config.YamlConfigToInputConfig(flags.Config)
 	if err != nil {
 		return fmt.Errorf("error occurred while executing the 'notify': %w", err)

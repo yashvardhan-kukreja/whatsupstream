@@ -24,7 +24,8 @@ import (
 )
 
 type flagpole struct {
-	Config string
+	Config       string
+	AsBackground bool
 }
 
 func NewCommand() *cobra.Command {
@@ -48,6 +49,11 @@ The notifications would be in the form of desktop notifications.`,
 		&flags.Config, "config",
 		fmt.Sprintf("%s/.whatsupstream/config.yaml", home),
 		"Path to the config containing preferences associated with the notifications to receive.",
+	)
+	cmd.Flags().BoolVar(
+		&flags.AsBackground, "background",
+		false,
+		"To make whatsupstream run as a background service",
 	)
 	return cmd
 }
