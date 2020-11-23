@@ -86,11 +86,11 @@ cd whatsupstream
 
     * If your whatsupstream config is at `$HOME/.whatsupstream/config.yaml`
     ```sh
-    make notify
+    whatsupstream notify --background
     ```
     * If your whatsupstream config is at some other place, say, `/path/to/other/place/whatsupstream.yaml`
     ```sh
-    make notify /path/to/other/place/whatsupstream.yaml
+    whatsupstream notify --background --config /path/to/other/place/whatsupstream.yaml
     ```
 OR
 
