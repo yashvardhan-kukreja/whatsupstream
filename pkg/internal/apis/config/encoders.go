@@ -85,5 +85,6 @@ func convertInputIssueConfigToInternalIssueConfig(inputIssueConfig config.IssueC
 		State:          issueState,
 		Since:          since,
 		MaxIssuesCount: maxIssuesCount,
+		SilentMode:     inputIssueConfig.SilentMode,
 	}, nil
 }

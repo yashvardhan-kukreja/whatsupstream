@@ -36,35 +36,55 @@ func runE(flags *flagpole) error {
 		return fmt.Errorf("error occurred while executing the 'notify': %w", err)
 	}
 	parsedConfig, err := internalConfig.ConvertInputConfigToInternalConfig(inputConfig)
+	// loud alerts on Mac has shown errors
+	// forcedSilentMode will turn to "true" whenever such errors are encountered
+	// and, notification will be forced to be silent no matter the "SilentMode" in any IssueConfig
+	// TODO: add a reconciler to check at an interval whether the loud alerts got fixed and update "forcedSilentMode" to false accordingly
+	forcedSilentMode := false
 	errThreshold := 0
 	for errThreshold <= 3 {
-		data, err := internalConfig.FetchNotificationData(parsedConfig)
+		// generate all the Notification objects to raise
+		allNotifications, err := internalConfig.FetchNotificationData(parsedConfig)
 		if err != nil {
 			fmt.Printf("error occurred while executing 'notify': %w", err)
 			errThreshold++
 		}
-		for i, issue := range data.Issues {
+		// raise all notifications
+		for _, notification := range allNotifications {
 			title := "Whatsupstream's Update 🚀"
-			description, err := formatNotificationDescription(issue)
-			silentMode := true
+			description, err := formatNotificationDescription(notification.Issue)
+			silentMode := notification.SilentMode
+			if forcedSilentMode {
+				silentMode = forcedSilentMode
+			}
 			if err != nil {
-				fmt.Printf("error occurred while executing 'notify': %w", err)
+				fmt.Println("error occurred while executing 'notify'")
 				errThreshold++
 			}
 			// raising notifications concurrently
 			go func() {
 				err := raiseNotification(title, description, silentMode)
 				if err != nil {
-					fmt.Printf("error occurred while executing 'notify': %w", err)
-					errThreshold++
+					if !forcedSilentMode {
+						forcedSilentMode = true
+						return
+					}
+					fmt.Println("error occurred while raising a notification")
 				}
-				parsedConfig.IssueConfigs[i].Since = time.Now().Format("2006-01-02T15:04:05Z") // updating the Since field to the latest time so that next time, only new issues come up
 			}()
 		}
+
+		// updating the Since field of all IssueConfigs to current time so that in the next github API call, only new issues come up
+		for i := range parsedConfig.IssueConfigs {
+			parsedConfig.IssueConfigs[i].Since = time.Now().Format("2006-01-02T15:04:05Z")
+		}
+
+		// wait from the next polling cycle
 		pollingInterval := time.Duration(parsedConfig.PollingRate) * time.Second
 		time.Sleep(pollingInterval)
 	}
-	return fmt.Errorf("error occurred while fetching notification data more than threshold amount of times (3)")
+	panic("error occurred while fetching notification data more than threshold amount of times (3)")
+	return nil
 }
 
 func formatNotificationDescription(issue github.Issue) (string, error) {

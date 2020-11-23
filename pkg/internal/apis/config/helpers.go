@@ -21,19 +21,22 @@ import (
 	"whatsupstream/pkg/internal/apis/config/github"
 )
 
-func FetchNotificationData(config Config) (Notification, error) {
+func FetchNotificationData(config Config) ([]Notification, error) {
 	apiUrls := generateAllApiUrlsForConfig(config)
-	allIssues := []github.Issue{}
+	allNotifications := []Notification{}
 	for i, apiUrl := range apiUrls {
-		issues, err := github.FetchTopIssues(apiUrl, config.IssueConfigs[i].MaxIssuesCount)
+		issuesResponse, err := github.FetchTopIssues(apiUrl, config.IssueConfigs[i].MaxIssuesCount)
 		if err != nil {
-			return Notification{}, fmt.Errorf("error occurred while fetching data for notification: %w", err)
+			return []Notification{}, fmt.Errorf("error occurred while fetching data for notification: %w", err)
 		}
-		allIssues = append(allIssues, issues...)
+		notificationsForCurrentIssuesRepsonse := []Notification{}
+		silentMode := config.IssueConfigs[i].SilentMode
+		for _, issue := range issuesResponse {
+			notificationsForCurrentIssuesRepsonse = append(notificationsForCurrentIssuesRepsonse, Notification{Issue: issue, SilentMode: silentMode})
+		}
+		allNotifications = append(allNotifications, notificationsForCurrentIssuesRepsonse...)
 	}
-	return Notification{
-		Issues: allIssues,
-	}, nil
+	return allNotifications, nil
 }
 
 func generateAllApiUrlsForConfig(config Config) []string {

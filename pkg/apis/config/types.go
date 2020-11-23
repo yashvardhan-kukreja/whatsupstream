@@ -56,6 +56,10 @@ type IssueConfig struct {
 	// for example: if MaxIssuesCount is 5, then, only top 5 latest issues will be considered for being notified about (if in a query more than issues are returned).
 	// if left unset, MaxIssuesCount will be set to 5.
 	MaxIssuesCount int `yaml:"max-issues-count,omitempty"`
+
+	// SilentMode whether the notification would be an alert with a sound or will it be silent
+	// if left unset, SilentMode, will be set to false
+	SilentMode bool `yaml:"silent-mode,omitempty"`
 }
 
 const (

@@ -55,7 +55,7 @@ type IssueConfig struct {
 	State IssueState
 
 	// Since denotes the timestamp from which the issues which were created after it, will only be eligible for being notified about.
-	//
+	// it must have the following format "yyyy-mm-ddTHH:MM:SSZ". For example:  "2006-01-02T15:04:05Z"
 	// if left unset, then, it will be set to the timestamp of exactly 24hrs (1 day) before current time.
 	Since string
 
@@ -63,6 +63,10 @@ type IssueConfig struct {
 	// for example: if MaxIssuesCount is 5, then, only top 5 latest issues will be considered for being notified about (if in a query more than issues are returned).
 	// if left unset, MaxIssuesCount will be set to 5.
 	MaxIssuesCount int
+
+	// SilentMode whether the notification would be an alert with a sound or will it be silent
+	// if left unset, SilentMode, will be set to false
+	SilentMode bool
 }
 
 // IssueState defines the possible state of the issue
@@ -79,5 +83,6 @@ const (
 )
 
 type Notification struct {
-	Issues []github.Issue
+	Issue      github.Issue
+	SilentMode bool
 }
