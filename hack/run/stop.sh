@@ -14,4 +14,4 @@
 # limitations under the License.
 
 # kills all the running whatsupstream processes
-ps aux | grep "whatsupstream" | grep -v "grep" | awk '{ print $2; }' | xargs kill  
+ps aux | grep "whatsupstream notify" | grep -v "grep" | awk '{ print $2; }' | xargs kill  

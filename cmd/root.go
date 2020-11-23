@@ -21,6 +21,7 @@ import (
 	"os"
 
 	"whatsupstream/pkg/cmd/whatsupstream/notify"
+	"whatsupstream/pkg/cmd/whatsupstream/stop"
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -52,4 +53,5 @@ func init() {
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
 	rootCmd.AddCommand(notify.NewCommand())
+	rootCmd.AddCommand(stop.NewCommand())
 }

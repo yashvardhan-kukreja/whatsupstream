@@ -100,7 +100,7 @@ whatsupstream notify --config /path/to/config.yaml
 ```
 Whatsupstream runs as a background process. So, to stop all the instances of whatsupstream, just run:
 ```sh
-make stop
+whatsupstream stop
 ```
 
 <!-- USAGE EXAMPLES -->
