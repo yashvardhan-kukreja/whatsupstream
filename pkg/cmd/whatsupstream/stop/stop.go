@@ -17,8 +17,10 @@ package stop
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
+	"os"
 	"os/exec"
+
+	"github.com/spf13/cobra"
 )
 
 func NewCommand() *cobra.Command {
@@ -35,9 +37,10 @@ func NewCommand() *cobra.Command {
 
 func runE() error {
 	stopCmd := `ps aux | grep "whatsupstream notify" | grep -v "grep" | awk '{ print $2; }' | xargs kill `
-	err := exec.Command("bash", "-c", stopCmd).Run()
-	if err != nil {
-		return fmt.Errorf("error occurred while stopping the instances of whatsupstream: %w", err)
+	execCmd := exec.Command("bash", "-c", stopCmd)
+	execCmd.Stderr = os.Stderr
+	if err := execCmd.Run(); err != nil {
+		return fmt.Errorf("%w", err)
 	}
 	return nil
 }
