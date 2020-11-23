@@ -105,11 +105,11 @@ func formatNotificationDescription(issue github.Issue) (string, error) {
 	owner := repositoryURLTokens[len(repositoryURLTokens)-2]
 
 	return fmt.Sprintf(`Repository: %s/%s
-Issue %d:
-With Labels: %s
+Labels: %s
+Link: https://github.com/%s/%s/issues/%d
 Created at: %s
 By: %s 
-	`, owner, repoName, issue.Number, labelsStr, createdAtStr, issue.User.Username), nil
+	`, owner, repoName, labelsStr, owner, repoName, issue.Number, createdAtStr, issue.User.Username), nil
 }
 
 func raiseNotification(title, description string, silentMode bool) error {
