@@ -28,6 +28,7 @@
 * [Whatsupstream in action](#whatsupstream-in-action)
 * [Contributing](#contributing)
 * [License](#license)
+* [Acknowledgements](#acknowledgements)
 
 <!-- ABOUT THE PROJECT -->
 ## About Whatsupstream
@@ -105,7 +106,7 @@ make stop
 <!-- USAGE EXAMPLES -->
 ## Whatsupstream in action
 
-<img src="./assets/usage_1.png" alt="Whatsupstream" width="200"/>
+<p align="center" style="margin:20px 20px 20px 20px;"><img src="./assets/usage_1.png" alt="Whatsupstream" width="275" /></p>
 
 <!-- CONTRIBUTING -->
 ## Contributing
