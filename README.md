@@ -10,9 +10,9 @@
     <br />
     <br />
     ·
-    <a href="https://github.com/yashvardhan-kukreja/nail-hacktoberfest/issues/new?assignees=&labels=bug&template=bug_report.md&title=">Report Bug</a>
+    <a href="https://github.com/yashvardhan-kukreja/whatsupstream/issues/new?assignees=&labels=bug&template=bug_report.md&title=">Report Bug</a>
     ·
-    <a href="https://github.com/yashvardhan-kukreja/nail-hacktoberfest/issues/new?assignees=&labels=feature&template=feature_request.md&title=">Request Feature</a>
+    <a href="https://github.com/yashvardhan-kukreja/whatsupstream/issues/new?assignees=&labels=feature&template=feature_request.md&title=">Request Feature</a>
   </p>
 </p>
 
@@ -117,3 +117,9 @@ Refer to the [Developer's Guide](./docs/developer-guide.md) for a detailed expla
 ## License
 
 Distributed under the Apache License Version 2.0. See [LICENSE](https://github.com/yashvardhan-kukreja/whatsupstream/blob/master/LICENSE) for more information.
+
+<!-- ACKNOWLEDGEMENTS -->
+## Acknowledgements
+  * [Gopher in the icon](https://cdn.freebiesupply.com/logos/large/2x/gopher-logo-png-transparent.png)
+  * [Bell in the icon](https://www.freepik.com/vectors/background)
+  * [GitHub logo in the icon](https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png)
