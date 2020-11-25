@@ -22,7 +22,8 @@ import (
 )
 
 const (
-	GITHUB_URL_REGEX = "(?:git|ssh|https?|git@[-w.]+)(:)?(//)?(.*?)(.git)?(/?|#[-dw._]+?)$"
+	GITHUB_URL_REGEX    = `(?:git|ssh|https?|git@[-w.]+)(:)?(//)?(.*?)(.git)?(/?|#[-dw._]+?)$`
+	ISO_8601_TIME_REGEX = `(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})Z`
 )
 
 func ValidateConfig(config Config) error {
@@ -45,6 +46,13 @@ func validateIssueConfig(issueConfig IssueConfig) error {
 }
 
 func validateSince(since string) error {
+	// accept an empty 'since' field(will be defaulted as current_time-24hr in ISO 8601 format)
+	if since == "" {
+		return nil
+	}
+	if matches, _ := regexp.MatchString(ISO_8601_TIME_REGEX, since); !matches {
+		return fmt.Errorf("'since' field not provided rightfully (expected format: 'yyyy-mm-ddTHH:MM:SSZ', for eg: '2006-01-02T15:04:05Z')")
+	}
 	return nil
 }
 
