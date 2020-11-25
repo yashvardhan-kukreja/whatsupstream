@@ -45,7 +45,7 @@ build:
 install-dev: build
 	$(INSTALL) -d $(INSTALL_DIR_DEV)
 	$(INSTALL) $(OUT_DIR)/$(WHATSUPSTREAM_BINARY_NAME) $(INSTALL_DIR_DEV)/$(WHATSUPSTREAM_BINARY_NAME)
-# for the normal users
+# for normal users
 install: build
 	$(INSTALL) -d $(INSTALL_DIR)
 	$(INSTALL) $(OUT_DIR)/$(WHATSUPSTREAM_BINARY_NAME) $(INSTALL_DIR)/$(WHATSUPSTREAM_BINARY_NAME)
@@ -56,7 +56,7 @@ clean:
 	rm -rf $(OUT_DIR)/
 ################################################################################
 # ============================== Auto-Update ===================================
-# update the latest code t=in rightful way -> gofmt
+# update the latest code in rightful way -> gofmt
 update: gofmt
 # gofmt
 gofmt:

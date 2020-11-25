@@ -16,7 +16,7 @@ An issue can be raised as one of the two categories:
 1. Fork the repo.
 2. Clone the forked repo locally.
 3. Create a new branch `issue-<issue number>/<title>` and work on it. For example, `issue-23/add-unit-tests`
-4. Test your changes by running `make install-dev`. This will compile your code and generate the whatsupstream's binary `/bin` directory inside the project (as `/bin/whatsupstream`)
+4. Test your changes by running `make build`. This will compile your code and generate the whatsupstream's binary `/bin` directory inside the project (as `/bin/whatsupstream`)
 5. Run `make gofmt` to gofmt all the go files in your code.
 5. Push your changes and raise a PR from your forked repository.
 
