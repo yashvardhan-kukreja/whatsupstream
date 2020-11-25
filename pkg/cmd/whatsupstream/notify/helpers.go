@@ -64,8 +64,7 @@ func runE(flags *flagpole) error {
 		}
 		// raise all notifications
 		for _, notification := range allNotifications {
-			title := "Whatsupstream's Update 🚀"
-			description, err := formatNotificationDescription(notification.Issue)
+			title, description, err := formatNotificationTitleAndDescription(notification.Issue)
 			silentMode := notification.SilentMode
 			if forcedSilentMode {
 				silentMode = forcedSilentMode
@@ -96,11 +95,10 @@ func runE(flags *flagpole) error {
 		pollingInterval := time.Duration(parsedConfig.PollingRate) * time.Second
 		time.Sleep(pollingInterval)
 	}
-	panic("error occurred while fetching notification data more than threshold amount of times (3)")
-	return nil
+	return fmt.Errorf("error occurred while fetching notification data more than threshold amount of times (3)")
 }
 
-func formatNotificationDescription(issue github.Issue) (string, error) {
+func formatNotificationTitleAndDescription(issue github.Issue) (string, string, error) {
 	labelsStr := ""
 	for _, label := range issue.Labels {
 		labelsStr += label.Name + ", "
@@ -110,19 +108,22 @@ func formatNotificationDescription(issue github.Issue) (string, error) {
 	timestampLayout := "2006-01-02T15:04:05Z"
 	createdAtStr, err := time.Parse(timestampLayout, issue.CreatedAt)
 	if err != nil {
-		return "", fmt.Errorf("error occurred while generating the notification description: %w", err)
+		return "", "", fmt.Errorf("error occurred while generating the notification title and description: %w", err)
 	}
 
 	repositoryURLTokens := strings.Split(issue.RepositoryURL, "/")
 	repoName := repositoryURLTokens[len(repositoryURLTokens)-1]
 	owner := repositoryURLTokens[len(repositoryURLTokens)-2]
 
-	return fmt.Sprintf(`Repository: %s/%s
+	title := fmt.Sprintf(`Whatsupstream - %s/%s 🚀`, owner, repoName)
+	description := fmt.Sprintf(`Issue: %d,
 Labels: %s
 Link: https://github.com/%s/%s/issues/%d
 Created at: %s
 By: %s 
-	`, owner, repoName, labelsStr, owner, repoName, issue.Number, createdAtStr, issue.User.Username), nil
+		`, issue.Number, labelsStr, owner, repoName, issue.Number, createdAtStr, issue.User.Username)
+
+	return title, description, nil
 }
 
 func raiseNotification(title, description string, silentMode bool) error {
