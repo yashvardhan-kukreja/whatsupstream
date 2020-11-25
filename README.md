@@ -58,30 +58,13 @@ Behind the scenes, this project entirely runs on GoLang but if you don't have it
 
 ### Project Setup
 
-1. Clone this repo
-   * With HTTPS
-   ```sh
-   git clone https://github.com/yashvardhan-kukreja/whatsupstream.git
-   ```
-   * With SSH
-   ```sh
-   git clone git@github.com:yashvardhan-kukreja/whatsupstream.git
-   ```
-2. Hop into the repository directory
+1. For getting the latest stable release
 ```sh
-cd whatsupstream
+curl -L https://github.com/yashvardhan-kukreja/whatsupstream/archive/v0.1.tar.gz | tar xvz
+cd whatsupstream-* && sudo make install
 ```
-3. And install whatsupstream
 
-    * For installing inside `/usr/local/bin/`
-    ```sh
-    make install
-    ```
-    * If you want the whatsupstream binary some other place:
-    ```sh
-    make install INSTALL_DIR=/path/to/other/dir
-    ```
-4. Setup your whatsupstream configuration in YAML by referring to [Whatsupstream Configuration Guide](./docs/configuration-guide.md) and save it in `$HOME/.whatsupstream/config.yaml` (preferable) or any other place.
+2. Setup your whatsupstream configuration in YAML by referring to [Whatsupstream Configuration Guide](./docs/configuration-guide.md) and save it in `$HOME/.whatsupstream/config.yaml` (preferable) or any other place.
 4. Run it as a background process :rocket:
 
     * If your whatsupstream config is at `$HOME/.whatsupstream/config.yaml`
