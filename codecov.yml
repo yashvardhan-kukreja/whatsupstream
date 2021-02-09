@@ -13,5 +13,5 @@ coverage:
 
 comment:
     layout: "reach,diff,flags,files,footer"
-    behaviour: default
+    behavior: default
     require_changes: no
