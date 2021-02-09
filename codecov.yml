@@ -10,3 +10,8 @@ coverage:
           informational: true
           target: auto
           threshold: 100%
+
+comment:
+    layout: "reach,diff,flags,files,footer"
+    behaviour: default
+    require_changes: no
