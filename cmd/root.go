@@ -17,10 +17,12 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
 	"os"
 
+	"github.com/spf13/cobra"
+
 	"whatsupstream/pkg/cmd/whatsupstream/notify"
+	"whatsupstream/pkg/cmd/whatsupstream/status"
 	"whatsupstream/pkg/cmd/whatsupstream/stop"
 )
 
@@ -53,5 +55,6 @@ func init() {
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
 	rootCmd.AddCommand(notify.NewCommand())
+	rootCmd.AddCommand(status.NewCommand())
 	rootCmd.AddCommand(stop.NewCommand())
 }
