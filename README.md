@@ -52,7 +52,7 @@ Here are instructions to setup and use whatsupstream.
 
 ### Prerequisites
 
-Just have `make` installed in your computer, rest all will be handled automatically for you.
+Make sure `make` is installed on your computer, Everything else will be handled automatically.
 
 Behind the scenes, this project entirely runs on GoLang but if you don't have it, no worries, `make` will set it up for you :)
 
